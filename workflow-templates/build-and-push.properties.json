@@ -1,5 +1,5 @@
 {
-    "name": "Build and push workflow",
+    "name": "Build and push to registry.eirb.fr",
     "description": "A simple workflow that calls a reusable workflow to build and push a docker image to registry.eirb.fr",
     "iconName": "octicon rocket"
 }
