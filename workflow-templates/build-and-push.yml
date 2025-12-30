@@ -15,3 +15,9 @@ jobs:
       image_name: ${{ github.repository }}
     # registry_username and registry_api_key must be defined
     secrets: inherit
+
+  deploy:
+    needs: [ build-and-push ]
+    uses: Eirbware/.github/.github/workflows/deploy-stack.yml@master
+    # portainer_stack_webhook must be defined
+    secrets: inherit

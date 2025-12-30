@@ -1,6 +1,6 @@
 {
-    "name": "Build and push to registry.eirb.fr",
-    "description": "A simple workflow that calls a reusable workflow to build and push a docker image to registry.eirb.fr",
+    "name": "Build and push to registry.eirb.fr and update the stack",
+    "description": "A simple workflow that calls a reusable workflow to build and push a docker image to registry.eirb.fr, and then call portainer to update the corresponding stack",
     "iconName": "octicon rocket"
 }
 
