@@ -17,3 +17,7 @@ To use a reusable workflow, you have to make a job which calls it, like this:
 ```
 
 More information [here](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)
+
+## Note
+
+The build-and-publish reusable workflow needs `id-token: write` in the permissions
