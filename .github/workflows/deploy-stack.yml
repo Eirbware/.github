@@ -5,6 +5,8 @@ on:
     secrets: 
       portainer_stack_webhook:
         required: true
+      wireguard_conf:
+        required: true
 
 jobs: 
   deploy:
