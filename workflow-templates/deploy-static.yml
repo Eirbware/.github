@@ -10,7 +10,6 @@ on:
 jobs:
   deploy:
     uses: Eirbware/.github/.github/workflows/deploy-static.yml@master
-    # portainer_stack_webhook must be defined
     with: 
       remote_user: "www-eirb"
       directory_to_copy: "./dist"
