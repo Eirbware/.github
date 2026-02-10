@@ -1,0 +1,5 @@
+{
+    "name": "Deploy static website",
+    "description": "A simple workflow that calls a reusable workflow to deploy a static website on eirb.fr",
+    "iconName": "octicon rocket"
+}
