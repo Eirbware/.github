@@ -47,7 +47,6 @@ jobs:
           SSH_SKEY: ${{ secrets.ssh_secret_key }}
           SSH_PKEY: ${{ secrets.ssh_public_key }}
           SSH_CERT: ${{ secrets.ssh_cert }}
-          SSH_CONFIG: ${{ secrets.SSH_CONFIG_BASE64 }}
           REMOTE_USER: ${{ inputs.remote_user }}
         run: |
           mkdir -p ${HOME}/.ssh
@@ -62,6 +61,7 @@ jobs:
             IdentityFile ${HOME}/.ssh/id_eirb
             CertificateFile ${HOME}/.ssh/id_eirb-cert.pub
           EOF > ${HOME}/.ssh/config
+          echo ${HOME}/.ssh/config
           chmod 400 ${HOME}/.ssh/*
 
       - name: Mount server files
