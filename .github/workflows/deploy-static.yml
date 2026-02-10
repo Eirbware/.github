@@ -53,15 +53,14 @@ jobs:
           echo "$SSH_SKEY" > ${HOME}/.ssh/id_eirb
           echo "$SSH_PKEY" > ${HOME}/.ssh/id_eirb.pub
           echo "$SSH_CERT" > ${HOME}/.ssh/id_eirb-cert.pub
-          echo << EOF 
+          cat << EOF > ${HOME}/.ssh/config
           Host eirb
             port 30
             Hostname eirb.fr
             User ${REMOTE_USER}
             IdentityFile ${HOME}/.ssh/id_eirb
             CertificateFile ${HOME}/.ssh/id_eirb-cert.pub
-          EOF > ${HOME}/.ssh/config
-          ls ${HOME}/.ssh/config
+          EOF
           chmod 400 ${HOME}/.ssh/*
 
       - name: Mount server files
