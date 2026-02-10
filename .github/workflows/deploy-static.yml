@@ -61,7 +61,6 @@ jobs:
             IdentityFile ${HOME}/.ssh/id_eirb
             CertificateFile ${HOME}/.ssh/id_eirb-cert.pub
           EOF
-          cat ${HOME}/.ssh/config
           chmod 400 ${HOME}/.ssh/*
 
       - name: Mount server files
