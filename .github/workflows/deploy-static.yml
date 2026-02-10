@@ -1,0 +1,77 @@
+name: deploy a static website
+
+on:
+  workflow_call:
+    inputs:
+      remote_user:
+        required: true
+        type: string
+      directory_to_copy:
+        required: true
+        type: string
+      artifact_name:
+        required: false
+        type: string 
+      artifact_path:
+        required: false
+        default: "."
+        type: string 
+    secrets:
+      ssh_secret_key:
+        required: true
+      ssh_public_key:
+        required: true
+      ssh_cert:
+        required: true
+
+jobs: 
+  deploy:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add artifacts if needed
+        if: ${{ inputs.artifact_name != '' }}
+        uses: actions/download-artifact@v5
+        with: 
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.artifact_path }}
+
+      - name: Install sshfs
+        run: |
+          sudo apt install sshfs
+
+      - name: Write ssh keys and certs
+        env:
+          SSH_SKEY: ${{ secrets.ssh_secret_key }}
+          SSH_PKEY: ${{ secrets.ssh_public_key }}
+          SSH_CERT: ${{ secrets.ssh_cert }}
+          SSH_CONFIG: ${{ secrets.SSH_CONFIG_BASE64 }}
+          REMOTE_USER: ${{ inputs.remote_user }}
+        run: |
+          mkdir -p ${HOME}/.ssh
+          echo "$SSH_SKEY" > ${HOME}/.ssh/id_eirb
+          echo "$SSH_PKEY" > ${HOME}/.ssh/id_eirb.pub
+          echo "$SSH_CERT" > ${HOME}/.ssh/id_eirb-cert.pub
+          echo << EOF 
+          Host eirb
+          port 30
+          Hostname eirb.fr
+          User ${REMOTE_USER}
+          IdentityFile ${HOME}/.ssh/id_eirb
+          CertificateFile ${HOME}/.ssh/id_eirb-cert.pub
+          EOF > ${HOME}/.ssh/config
+          chmod 400 ${HOME}/.ssh/*
+
+      - name: Mount server files
+        run: |
+          mkdir -p ${HOME}/mnt
+          sshfs -o IdentityFile=${HOME}/.ssh/id_eirb -o StrictHostKeyChecking=no eirb: ${HOME}/mnt
+
+      - name: Copy new version
+        env: 
+          DIR_TO_COPY: ${{ inputs.directory_to_copy }}
+        run: |
+          cp -r ${DIR_TO_COPY}/* ${HOME}/mnt/nginx/www
+          umount ${HOME}/mnt
