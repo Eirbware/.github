@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.WIREGUARD_CONF }}" > wg0.conf
           sudo chmod 600 ./wg0.conf
           echo "setting config"
-          sudo wg-quick up ./wg0.conf || ((sudo dmesg -T | grep wireguard) && false)
+          sudo wg-quick up ./wg0.conf || (echo "debugging error, dmesg output: " && (sudo dmesg -T | grep wg-quick) && false)
 
       - name: Trigger Portainer stack webhook
         run: |
