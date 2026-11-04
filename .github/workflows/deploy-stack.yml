@@ -2,16 +2,16 @@ name: deploy a stack on portainer
 
 on:
   workflow_call:
-    secrets: 
+    secrets:
       portainer_stack_webhook:
         required: true
       wireguard_conf:
         required: true
 
-jobs: 
+jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Connect to vpn (necessary to access portainer)
         run: |
           sudo apt install resolvconf
@@ -19,6 +19,8 @@ jobs:
           echo "${{ secrets.WIREGUARD_CONF }}" > wg0.conf
           sudo chmod 600 wg0.conf
           echo "setting config"
+          whoami
+          ls -la
           sudo wg-quick up ./wg0.conf
 
       - name: Trigger Portainer stack webhook
