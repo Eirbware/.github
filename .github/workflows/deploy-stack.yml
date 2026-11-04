@@ -18,9 +18,8 @@ jobs:
           sudo apt install wireguard
           echo "${{ secrets.WIREGUARD_CONF }}" > wg0.conf
           sudo chmod 600 ./wg0.conf
+          wc -l wg0.conf
           echo "setting config"
-          ls -la ./wg0.conf
-          ls -la $(which wg-quick)
           sudo wg-quick up ./wg0.conf
 
       - name: Trigger Portainer stack webhook
